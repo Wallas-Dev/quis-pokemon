@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -15,145 +6,208 @@ function shuffle(array) {
     return array;
 }
 
-function questPokemon() {
+function random() {
 
-    let valid = false;
-    let valid1 = false;
-    var resposta1 = document.createElement('div');
-    var resposta2 = document.createElement('div');
-    var resposta3 = document.createElement('div');
+    var numsRandom = [];
+    while (numsRandom.length < 3) {
+        let numRandom = Math.floor(Math.random() * 150) + 1;
+        if (!numsRandom.includes(numRandom)) {
+            numsRandom.push(numRandom);
+        }
+    }
+    return numsRandom;
+}
 
-    resposta1.classList.add('resposta');
-    resposta2.classList.add('resposta');
-    resposta3.classList.add('resposta');
-    var rand = Math.floor(Math.random() * 150);
-    fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
-        .then(response => response.json())
-        .then(allpokemon => {
+function validResp() {
+    return new Promise((resolve, reject) => {
+        var elementos = document.querySelectorAll('[type=radio]');
+        for (var i = 0; i < elementos.length; i++) {
 
-            var pokemons = {};
-            allpokemon.results.map(function () {
+            elementos[i].addEventListener('change', function (e) {
 
-                fetch("https://pokeapi.co/api/v2/pokemon/" + rand + "/")
-                    .then(response => response.json())
-                    .then(pokemonSingle => {
-                        pokemons = { nome: pokemonSingle.name, imagem: pokemonSingle.sprites.other.dream_world.front_default };
+                let marcado = e.target.value;
 
-                        let imgpkm = document.getElementById('img-pkm');
-                        var opcResposta = document.querySelector('.respostas');
-
-                        if (valid1 == false) {
+                if (marcado == "correta") {
+                    var resp = true;
+                    let parentNode = e.target.parentNode;
+                    parentNode.style.backgroundColor = 'green';
+                    parentNode.style.transition = '1s';
 
 
-                            if (pokemons != undefined) {
+                    let els = parentNode.parentNode.querySelectorAll('[type=radio]');
+
+                    for (var n = 0; n < els.length; n++) {
+                        els[n].disabled = true
+                    }
+                } else if (marcado == "incorreta") {
+                    var resp = false;
+                    let parentNode = e.target.parentNode;
+                    parentNode.style.backgroundColor = 'red';
+                    parentNode.style.transition = '1s';
+
+                    let els = parentNode.parentNode.querySelectorAll('[type=radio]');
+
+                    for (var n = 0; n < els.length; n++) {
+                        els[n].disabled = true
+                    }
+
+                    let correta = parentNode.parentNode.querySelector('[value=correta]');
+                    correta.parentNode.style.backgroundColor = 'green';
+                    correta.parentNode.style.transition = '1s';
+
+                }
+                return resolve(resp);
+            });
+        }
+    });
 
 
-                                var opc1 = document.createElement('input');
-                                opc1.setAttribute('type', 'radio');
-                                opc1.setAttribute('name', 'pergunta1');
-                                opc1.setAttribute('value', 'correta');
+}
 
-                                var span1 = document.createElement('span');
-                                span1.textContent = pokemons.nome[0].toUpperCase() + pokemons.nome.substring(1);
+function questCard() {
+    return new Promise((resolve, reject) => {
+        var rand = random();
 
-                                resposta1.appendChild(opc1);
-                                resposta1.appendChild(span1);
-                                var opcCorreta = resposta1;
+        let resposta1 = document.createElement('div');
+        let resposta2 = document.createElement('div');
+        let resposta3 = document.createElement('div');
 
-                                var opc2 = document.createElement('input');
-                                opc2.setAttribute('type', 'radio');
-                                opc2.setAttribute('name', 'pergunta1');
-                                opc2.setAttribute('value', 'incorreta');
+        resposta1.classList.add('resposta');
+        resposta2.classList.add('resposta');
+        resposta3.classList.add('resposta');
 
-                                var span2 = document.createElement('span');
-                                span2.textContent = 'Wallas';
-
-                                resposta2.appendChild(opc2);
-                                resposta2.appendChild(span2);
-                                var opcErrada1 = resposta2;
+        var pkmCorreto = undefined;
+        var pkmErrado1 = undefined;
+        var pkmErrado2 = undefined;
+        var resp = undefined;
 
 
-                                var opc3 = document.createElement('input');
-                                opc3.setAttribute('type', 'radio');
-                                opc3.setAttribute('name', 'pergunta1');
-                                opc3.setAttribute('value', 'incorreta');
+        fetch("https://pokeapi.co/api/v2/pokemon/" + rand[0] + "/").then(response => response.json()).then(pokemonSingle => {
+            pkmErrado1 = { nome: pokemonSingle.name };
 
-                                var span3 = document.createElement('span');
-                                span3.textContent = 'João';
+            fetch("https://pokeapi.co/api/v2/pokemon/" + rand[1] + "/").then(response => response.json()).then(pokemonSingle => {
+                pkmErrado2 = { nome: pokemonSingle.name };
 
-                                resposta3.appendChild(opc3);
-                                resposta3.appendChild(span3);
-                                var opcErrada2 = resposta3;
+                fetch("https://pokeapi.co/api/v2/pokemon/" + rand[2] + "/").then(response => response.json()).then(pokemonSingle => {
 
+                    pkmCorreto = { nome: pokemonSingle.name, imagem: pokemonSingle.sprites.other.dream_world.front_default };
 
-                                var opcs = [opcCorreta, opcErrada1, opcErrada2];
+                    let imgpkm = document.getElementById('img-pkm');
+                    var opcResposta = document.querySelector('.respostas');
 
 
-                                var opcsEmbaralhada = shuffle(opcs);
+                    if ((pkmCorreto != undefined) && (pkmErrado1 != undefined) && (pkmErrado2 != undefined)) {
 
 
-                                //console.log(val);
-                                imgpkm.src = pokemons.imagem;
-                                //console.log(pokemons.nome);
-                                //opcResposta.innerHTML = "";
-                                if (valid == false) {
-                                    for (var i = 0; i < 3; i++) {
+                        var opc1 = document.createElement('input');
+                        opc1.setAttribute('type', 'radio');
+                        opc1.setAttribute('value', 'correta');
 
-                                        opcResposta.appendChild(opcsEmbaralhada[i]);
+                        var span1 = document.createElement('span');
+                        span1.textContent = pkmCorreto.nome[0].toUpperCase() + pkmCorreto.nome.substring(1);
 
-                                    }
-                                    valid = true;
-                                }
+                        resposta1.appendChild(opc1);
+                        resposta1.appendChild(span1);
+                        var opcCorreta = resposta1;
 
-                            }
-                            var elementos = document.querySelectorAll('[type=radio]');
-                            console.log(elementos.length)
-                            for (var i = 0; i < elementos.length; i++) {
-                                elementos[i].addEventListener('change', function (e) {
+                        var opc2 = document.createElement('input');
+                        opc2.setAttribute('type', 'radio');
+                        opc2.setAttribute('value', 'incorreta');
 
-                                    let marcado = e.target.value;
+                        var span2 = document.createElement('span');
+                        span2.textContent = pkmErrado1.nome[0].toUpperCase() + pkmErrado1.nome.substring(1);
 
-                                    if (marcado == "correta") {
-
-                                        let parentNode = e.target.parentNode;
-                                        parentNode.style.backgroundColor = 'green';
-                                        parentNode.style.transition = '1s';
+                        resposta2.appendChild(opc2);
+                        resposta2.appendChild(span2);
+                        var opcErrada1 = resposta2;
 
 
-                                        let els = parentNode.parentNode.querySelectorAll('[type=radio]');
+                        var opc3 = document.createElement('input');
+                        opc3.setAttribute('type', 'radio');
 
-                                        for (var n = 0; n < els.length; n++) {
-                                            els[n].disabled = true
-                                        }
+                        opc3.setAttribute('value', 'incorreta');
 
-                                    } else if (marcado == "incorreta") {
+                        var span3 = document.createElement('span');
+                        span3.textContent = pkmErrado2.nome[0].toUpperCase() + pkmErrado2.nome.substring(1);
 
-                                        let parentNode = e.target.parentNode;
-                                        parentNode.style.backgroundColor = 'red';
-                                        parentNode.style.transition = '1s';
+                        resposta3.appendChild(opc3);
+                        resposta3.appendChild(span3);
+                        var opcErrada2 = resposta3;
 
-                                        let els = parentNode.parentNode.querySelectorAll('[type=radio]');
+                        var opcs = [opcCorreta, opcErrada1, opcErrada2];
 
-                                        for (var n = 0; n < els.length; n++) {
-                                            els[n].disabled = true
-                                        }
+                        var opcsEmbaralhada = shuffle(opcs);
 
-                                        let correta = parentNode.parentNode.querySelector('[value=correta]');
-                                        correta.parentNode.style.backgroundColor = 'green';
-                                        correta.parentNode.style.transition = '1s';
+                        imgpkm.src = pkmCorreto.imagem;
 
-                                    }
-                                });
-                            }
-                            valid1 = true;
+
+                        for (var i = 0; i < 3; i++) {
+
+                            opcResposta.appendChild(opcsEmbaralhada[i]);
+
                         }
-                    })
+
+
+                        resp = validResp();
+
+                        resolve(resp.then(quest => {
+                            console.log(quest);
+                            return quest;
+                        })
+                            .catch(erro => {
+                                console.erro("Erro", erro);
+                                throw erro;
+                            }));
+
+                    }
+                });
 
             });
 
-
         });
+    });
+
 }
 
-questPokemon();
+
+
+let btn = document.querySelector('.box-ini .btn-comecar');
+btn.addEventListener('click', function () {
+    var score = document.querySelector('.placar .score');
+    let subTitulo = document.querySelector('.box-ini h2');
+    let acerto = 0;
+    subTitulo.style.display = 'none';
+    btn.style.display = 'none';
+    var box = document.querySelector('.box-opc');
+    box.style.display = 'block';
+
+    questCard().then(quest => {
+        console.log(quest);
+
+
+    }).catch(erro => {
+        console.erro("Erro", erro);
+        throw erro;
+    });
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
