@@ -140,18 +140,14 @@ function questCard() {
 
                         imgpkm.src = pkmCorreto.imagem;
 
-
                         for (var i = 0; i < 3; i++) {
 
                             opcResposta.appendChild(opcsEmbaralhada[i]);
 
                         }
 
-
                         resp = validResp();
-
                         resolve(resp.then(quest => {
-                            console.log(quest);
                             return quest;
                         })
                             .catch(erro => {
@@ -168,30 +164,193 @@ function questCard() {
     });
 
 }
+function reload(){
+    location.reload();
+}
 
+function validPlacar(quest) {
+    var acertos = document.querySelector('.placar .acertos > span').textContent;
+    acertos = parseInt(acertos);
+    var pontos = document.querySelector('.placar .score > span').textContent;
+    pontos = parseInt(pontos);
+    var score = document.querySelector('.placar .score > span');
+    var wins = document.querySelector('.placar .acertos > span');
+
+    if (quest == true) {
+        acertos += 1;
+        pontos += 10;
+        score.innerHTML = pontos;
+        wins.innerHTML = acertos;
+        
+    }
+    var list = [acertos, pontos];
+    return list;
+}
 
 
 let btn = document.querySelector('.box-ini .btn-comecar');
+var boxFim = document.querySelector('.box-fim');
+var boxIni = document.querySelector('.box-ini');
+boxFim.style.display = 'none';
+
 btn.addEventListener('click', function () {
-    var score = document.querySelector('.placar .score');
+
     let subTitulo = document.querySelector('.box-ini h2');
-    let acerto = 0;
     subTitulo.style.display = 'none';
     btn.style.display = 'none';
     var box = document.querySelector('.box-opc');
     box.style.display = 'block';
+    var boxRespostas = document.querySelector('.respostas');
+
 
     questCard().then(quest => {
-        console.log(quest);
+        if ((quest == true) || (quest == false)) {
+            if (quest == true) {
+                validPlacar(quest);
+            }
+            setTimeout(function () {
+                boxRespostas.innerHTML = "";
+                questCard().then(quest2 => {
+                    if ((quest2 == true) || (quest2 == false)) {
+                        if (quest2 == true) {
+                            validPlacar(quest2);
+                        }
+
+                        setTimeout(function () {
+                            boxRespostas.innerHTML = "";
+                            questCard().then(quest3 => {
+                                if ((quest3 == true) || (quest3 == false)) {
+                                    if (quest3 == true) {
+                                        validPlacar(quest3);
+                                    }
+
+                                    setTimeout(function () {
+                                        boxRespostas.innerHTML = "";
+                                        questCard().then(quest4 => {
+                                            if ((quest4 == true) || (quest4 == false)) {
+                                                if (quest4 == true) {
+                                                    validPlacar(quest4);
+                                                }
+
+                                                setTimeout(function () {
+                                                    boxRespostas.innerHTML = "";
+                                                    questCard().then(quest5 => {
+                                                        if ((quest5 == true) || (quest5 == false)) {
+                                                            if (quest5 == true) {
+                                                                validPlacar(quest5);
+                                                            }
+
+                                                            setTimeout(function () {
+                                                                boxRespostas.innerHTML = "";
+                                                                questCard().then(quest6 => {
+                                                                    if ((quest6 == true) || (quest6 == false)) {
+                                                                        if (quest6 == true) {
+                                                                            validPlacar(quest6);
+                                                                        }
+
+                                                                        setTimeout(function () {
+                                                                            boxRespostas.innerHTML = "";
+                                                                            questCard().then(quest7 => {
+                                                                                if ((quest7 == true) || (quest7 == false)) {
+                                                                                    if (quest7 == true) {
+                                                                                        validPlacar(quest7);
+                                                                                    }
+
+                                                                                    setTimeout(function () {
+                                                                                        boxRespostas.innerHTML = "";
+                                                                                        questCard().then(quest8 => {
+                                                                                            if ((quest8 == true) || (quest8 == false)) {
+                                                                                                if (quest8 == true) {
+                                                                                                    validPlacar(quest8);
+                                                                                                }
+
+                                                                                                setTimeout(function () {
+                                                                                                    boxRespostas.innerHTML = "";
+                                                                                                    questCard().then(quest9 => {
+                                                                                                        if ((quest9 == true) || (quest9 == false)) {
+                                                                                                            if (quest9 == true) {
+                                                                                                                validPlacar(quest9);
+                                                                                                            }
+
+                                                                                                            setTimeout(function () {
+                                                                                                                boxRespostas.innerHTML = "";
+                                                                                                                questCard().then(quest10 => {
+                                                                                                                    if ((quest10 == true) || (quest10 == false)) {
+                                                                                                                        let pontos = 0;
+                                                                                                                        let acertos = 0;
+                                                                                                                        let list = [];
+                                                                                                                        if (quest10 == true) {
+                                                                                                                            list = validPlacar(quest10);
+
+                                                                                                                        } else {
+                                                                                                                            list = validPlacar(false);
+                                                                                                                        }
 
 
-    }).catch(erro => {
-        console.erro("Erro", erro);
-        throw erro;
+                                                                                                                        setTimeout(function () {
+                                                                                                                            box.style.display = 'none';
+                                                                                                                            boxIni.style.display = 'none';
+                                                                                                                            boxFim.style.display = 'block';
+
+                                                                                                                            acertos = document.querySelector('.placar-fim .acertos > span');
+                                                                                                                            acertos.innerHTML = list[0];
+
+                                                                                                                            score = document.querySelector('.placar-fim .score > span');
+                                                                                                                            score.innerHTML = list[1];
+
+                                                                                                                        }, 1500);
+                                                                                                                    }
+
+                                                                                                                });
+
+                                                                                                            }, 1500);
+                                                                                                        }
+
+                                                                                                    });
+
+                                                                                                }, 1500);
+                                                                                            }
+
+                                                                                        });
+
+                                                                                    }, 1500);
+                                                                                }
+
+                                                                            });
+
+                                                                        }, 1500);
+                                                                    }
+
+                                                                });
+
+                                                            }, 1500);
+                                                        }
+
+                                                    });
+
+                                                }, 1500);
+                                            }
+
+                                        });
+
+                                    }, 1500);
+                                }
+
+                            });
+
+                        }, 1500);
+                    }
+
+                });
+
+            }, 1500);
+        }
+
     });
 
 
 });
+
 
 
 

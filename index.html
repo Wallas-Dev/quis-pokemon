@@ -19,11 +19,24 @@
     <div class="box-ini">
         <h2>Bem-vindo ao quiz de Pokémon</h2>
         <div class="placar">
-            <h3 class="score">Score: 0</h3>
-            <h3>Acertos: 0</h3>
+            <h3 class="score">Score: <span>0</span></h3>
+            <h3 class="acertos">Acertos: <span>0</span></h3>
         </div>
         <button class="btn-comecar">COMEÇAR</button>
     </div>
+
+    <div class="box-fim">
+        <div class="titlebox">
+            <h2>Parabéns!!!</h2>
+            <h2>Essa é sua pontuação:</h2>
+        </div>
+        <div class="placar-fim">
+            <h3 class="score">Score: <span>0</span></h3>
+            <h3 class="acertos">Acertos: <span>0</span></h3>
+        </div>
+        <button class="btn-fim" onclick="reload()">REINICIAR</button>
+    </div>
+
     <form class="box-opc" action="">
         <div class="img-pokemon">
             <img id="img-pkm"
@@ -33,7 +46,7 @@
         <div class="pergunta">
             <h2>Que pokémon é esse...</h2>
         </div>
-        <div class="respostas"> 
+        <div class="respostas">
 
         </div>
     </form>
